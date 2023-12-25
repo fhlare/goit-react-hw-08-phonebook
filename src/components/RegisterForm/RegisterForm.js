@@ -1,8 +1,22 @@
 import { Formik } from 'formik';
-import{Form, Field, ErrorMessage, FormGroup} from './RegisterForm.styled' 
+import {
+  Form,
+  Field,
+  ErrorMessage,
+  FormGroup,
+  IoPersonSharp,
+  InputContainer,
+  IoMdMail,
+  RiLockPasswordFill,
+  FormButton,
+} from './RegisterForm.styled';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { register } from '../../redux/auth/operations';
+import { useEffect } from 'react';
+import { useAuth } from '../../hooks/useAuth';
+import toast from 'react-hot-toast';
+import { resetError } from '../../redux/auth/authSlice';
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -17,6 +31,15 @@ const validationSchema = Yup.object({
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
+  const { isRejected } = useAuth();
+
+  useEffect(() => {
+  if (isRejected) {
+    toast.error('Oops! Something went wrong. Try again please');
+  }
+    dispatch(resetError());
+  
+},[dispatch, isRejected]);
 
   const handelSubmit = value => dispatch(register(value));
   return (
@@ -35,20 +58,29 @@ export const RegisterForm = () => {
       <Form>
         <FormGroup>
           Name
-          <Field type="name" name="name" autoComplete="off"/>
+          <InputContainer>
+            <Field type="name" name="name" autoComplete="off" />
+            <IoPersonSharp />
+          </InputContainer>
           <ErrorMessage name="name" component="span" />
         </FormGroup>
         <FormGroup>
           Email
-          <Field type="email" name="email" autoComplete="off"/>
+          <InputContainer>
+            <Field type="email" name="email" autoComplete="off" />
+            <IoMdMail />
+          </InputContainer>
           <ErrorMessage name="email" component="span" />
         </FormGroup>
         <FormGroup>
           Password
-          <Field type="password" name="password" autoComplete="off"/>
+          <InputContainer>
+            <Field type="password" name="password" autoComplete="off" />
+            <RiLockPasswordFill />
+          </InputContainer>
           <ErrorMessage name="password" component="span" />
         </FormGroup>
-        <button type="submit">Register</button>
+        <FormButton type="submit">Register</FormButton>
       </Form>
     </Formik>
   );

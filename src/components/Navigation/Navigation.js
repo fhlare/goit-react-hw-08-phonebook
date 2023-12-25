@@ -1,11 +1,14 @@
-import { NavLink } from "./Navigation.styled"
+import { useAuth } from "hooks/useAuth"
+import { NavContainer, NavLink, } from "./Navigation.styled"
 
 export const Navigation = () => {
+  const { isLoggedIn } = useAuth();
   return (
     <nav>
+      <NavContainer>
       <NavLink to="/" >Home</NavLink>
-      {/* Тут нужно сделать проверку на {isLoggedIn && (NavLink Contacts)} */}
-      <NavLink to="/contacts">Contacts</NavLink>
+      {isLoggedIn && (<NavLink to="/contacts">Contacts</NavLink>)}
+      </NavContainer>
     </nav>
   )
 }

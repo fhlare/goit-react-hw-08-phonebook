@@ -5,6 +5,11 @@ import {
   Field,
   ErrorMessage,
   FormGroup,
+  InputContainer,
+  IoPersonSharp,
+  FaPhone,
+  FormButton,
+  Strong,
 } from './ContatctForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from '../../redux/contacts/operations';
@@ -21,10 +26,12 @@ const contactSchema = Yup.object().shape({
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const newContact= useSelector(selectContacts);
+  const newContact = useSelector(selectContacts);
 
   const handelSubmit = value => {
-    const sameContact = newContact.some(contact => contact.name.toLowerCase() === value.name.toLowerCase());
+    const sameContact = newContact.some(
+      contact => contact.name.toLowerCase() === value.name.toLowerCase()
+    );
     if (sameContact) {
       alert(`${value.name} is alredy contact`);
     } else {
@@ -44,19 +51,26 @@ export const ContactForm = () => {
       }}
     >
       <Form>
+        <Strong>Add your contacts</Strong>
         <FormGroup>
           Name
-          <Field name="name" />
+          <InputContainer>
+            <Field type="name" name="name" />
+            <IoPersonSharp />
+          </InputContainer>
           <ErrorMessage name="name" component="span" />
         </FormGroup>
 
         <FormGroup>
           Number
-          <Field name="number" type="text" />
+          <InputContainer>
+            <Field type="text" name="number" />
+            <FaPhone />
+          </InputContainer>
           <ErrorMessage name="number" component="span" />
         </FormGroup>
 
-        <button type="submit">Add contact</button>
+        <FormButton type="submit">Add contact</FormButton>
       </Form>
     </Formik>
   );
